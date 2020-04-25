@@ -1,11 +1,30 @@
 FROM docker.io/bitnami/minideb:buster
-LABEL maintainer "Bitnami <containers@bitnami.com>"
 
 ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     HOME="/" \
     OS_ARCH="amd64" \
     OS_FLAVOUR="debian-10" \
     OS_NAME="linux"
+
+# Install node 12
+ENV NODE_VERSION 12.16.2
+ENV YARN_VERSION 1.22.4
+
+RUN curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
+ && tar -xJf "node-v$NODE_VERSION-linux-$ARCH.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
+ && rm "node-v$NODE_VERSION-linux-x64.tar.xz" \
+ && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+ && node --version \
+ && npm --version
+
+RUN curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
+ && mkdir -p /opt \
+ && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
+ && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
+ && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
+ && rm yarn-v$YARN_VERSION.tar.gz \
+ && yarn --version
+# End install node
 
 COPY prebuildfs /
 # Install required system packages and dependencies
