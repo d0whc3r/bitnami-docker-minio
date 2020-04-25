@@ -8,7 +8,7 @@ ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
 
 COPY prebuildfs /
 # Install required system packages and dependencies
-RUN install_packages ca-certificates curl jq procps sudo unzip
+RUN install_packages ca-certificates curl jq procps sudo unzip git
 RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "minio-client" "2020.4.25-0" --checksum c82f86e5a5b6d80d43d29cc501ab826a24f2cbdc5f28e916298bd71caa460905
 RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "minio" "2020.4.23-0" --checksum a2d8fcd65a40be0ca1dc08d8220019166f239cead10b4279f6e92ab2fb9414bb
 RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "gosu" "1.12.0-0" --checksum 582d501eeb6b338a24f417fededbf14295903d6be55c52d66c52e616c81bcd8c
